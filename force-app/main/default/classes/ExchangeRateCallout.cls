@@ -1,4 +1,4 @@
-public with sharing class ExchangeRateCallout {
+global with sharing class ExchangeRateCallout {
 
     @AuraEnabled
     public static void createExchangeRate(String baseCurrency, Date userDate) {
