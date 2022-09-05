@@ -1,0 +1,53 @@
+<aura:component controller="ExchangeRateCallout"
+    implements="flexipage:availableForAllPageTypes, forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="fieldMap" type="Map" />
+    <aura:attribute name="exchangeRate" type="Exchange_Rate__c" default="{'sobjectType':'Exchange_Rate__c', 
+                                                       'Base_Currency__c': 'GBP'}" />
+    <aura:attribute name="userDate" type="Date" />
+    <aura:attribute name="records" type="Exchange_Rate__c[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div style="margin-bottom: 5px;">
+        <fieldset class="slds-box slds-theme_default slds-container_small">
+            <div>
+                <b>Currency Settings</b>
+            </div>
+            <div>
+                <div class="form-group">
+                    <lightning:select aura:id="exchangePicklist" value="{!v.exchangeRate.Base_Currency__c}"
+                        onchange="{!c.handleOnChange}" name="exchangePicklist" label="Base Currency">
+                        <aura:iteration items="{!v.fieldMap}" var="i" indexVar="key">
+                            <option text="{!i.value}" value="{!i.key}"
+                                selected="{!i.key==v.exchangeRate.Base_Currency__c}" />
+                        </aura:iteration>
+                    </lightning:select>
+                    <div style="margin-top: 5px;">
+                        <div style="margin-right: 5px;">
+                            <lightning:button variant="brand" label="Change Base Currency"
+                                onclick="{!c.changeCurrencyHandler}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <div style="margin-right: 15px">
+                    <!-- <lightning:input type="date" name="startdate" label="Start Date" value="{!v.today}"/> -->
+                    <lightning:input type="date" name="startdate" label="Show Exchange Rate" onchange="{!c.getRecordHandler}" />
+                </div>
+                <div>
+                    <lightning:button variant="base" label="Create Exchange Rate"
+                        onclick="{!c.createHandler}" />
+                </div>
+                <!-- <div>
+                    <lightning:input type="date" name="enddate" label="End Date" />
+                </div> -->
+            </div>
+            <div class="slds-scrollable_y" style="height: 10rem; width: 30rem">
+                <aura:iteration var="r" items="{!v.records}">
+                    <p><b>{!r.Date__c}</b></p>
+                    <p><b>USD: </b>{!r.USD__c}<b> CAD: </b>{!r.CAD__c} <b> EUR: </b>{!r.EUR__c} <b> GBP: </b>{!r.GBP__c}
+                    </p>
+                </aura:iteration>
+            </div>
+        </fieldset>
+    </div>
+</aura:component>
